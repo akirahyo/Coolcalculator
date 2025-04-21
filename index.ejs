@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cool Calulator!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=0.8">
+    <link rel="stylesheet" type="text/css" href="/styles-modern.css"/>
+</head>
+
+<body>
+    <h1 class="main-title">Cool Calculator!</h1> <button class="theme-change" id="theme-change">Change theme</button>
+    <br>
+    <p class="output-area" id="output-area">0</p>
+    <div class="calc-box">
+        <button class="clear-button">CLEAR</button>
+        <br>
+        <button class="number" id="number1">1</button>
+        <button class="number" id="number2">2</button>
+        <button class="number" id="number3">3</button>
+        <br>
+        <button class="number" id="number4">4</button>
+        <button class="number" id="number5">5</button>
+        <button class="number" id="number6">6</button>
+        <br>
+        <button class="number" id="number7">7</button>
+        <button class="number" id="number8">8</button>
+        <button class="number" id="number9">9</button>
+        <br>
+        <button class="operator">+</button>
+        <button class="number" id="number0">0</button>
+        <button class="operator">-</button>
+        <br>
+        <button class="operator">×</button>
+        <button class="operator">÷</button>
+        <button class="equal-button">=</button>
+        <br>
+
+    </div>
+
+<script>
+    const themeButton = document.querySelector('.theme-change');
+    const stylesheet = document.querySelector('link[rel="stylesheet"]');
+
+    const outputArea = document.getElementById('output-area');
+    const numberButtons = document.querySelectorAll('.number');
+    const operatorButtons = document.querySelectorAll('.operator');
+    const clearButton = document.querySelector('.clear-button');
+    const equalButton = document.querySelector('.equal-button');
+
+    let currentInput = '0';
+
+    function updateDisplay(value) {
+        outputArea.textContent = value;
+    }
+
+    function calculate(expression) {
+        try {
+            expression = expression.replace(/×/g, '*').replace(/÷/g, '/');
+            return eval(expression).toString();
+        } catch (error) {
+            return 'Error';
+        }
+    }
+
+    updateDisplay(currentInput);
+
+    numberButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            currentInput = (currentInput === '0') ? button.textContent : currentInput + button.textContent;
+            updateDisplay(currentInput);
+        });
+    });
+
+    operatorButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            currentInput = (['+', '-', '×', '÷'].includes(currentInput.slice(-1))) ? currentInput : currentInput + button.textContent;
+            updateDisplay(currentInput);
+        });
+    });
+
+    clearButton.addEventListener('click', () => {
+        clearButton.classList.add('animate');
+
+        clearButton.addEventListener('animationend', () => {
+            clearButton.classList.remove('animate');
+        }, { once: true });
+
+
+        currentInput = '0';
+        updateDisplay(currentInput);
+    });
+
+    equalButton.addEventListener('click', () => {
+        currentInput = calculate(currentInput);
+        updateDisplay(currentInput);
+    });
+
+    themeButton.addEventListener('click', () => {
+        if (stylesheet.getAttribute('href') === '/styles-modern.css') {
+            stylesheet.setAttribute('href', '/styles-oldschool.css');
+        } else {
+            stylesheet.setAttribute('href', '/styles-modern.css');
+        }
+    });
+
+    numberButtons.forEach(button => {
+      button.addEventListener('click', () => {
+          button.classList.add('animate');
+          
+          button.addEventListener('animationend', () => {
+              button.classList.remove('animate');
+          }, { once: true });
+      });
+  });
+
+
+
+    
+</script>
+</body>
+</html>
